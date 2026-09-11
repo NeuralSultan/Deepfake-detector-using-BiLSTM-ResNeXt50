@@ -5,27 +5,23 @@ from ultralytics import YOLO
 from pathlib import Path
 import random
 
-# ----------- الإعدادات -----------
 DATASET_DIRS = {
-    "Original": r"D:\Dataset\Faceforensics++\FaceForensics++_C23\original",
-    "DeepFakes": r"D:\Dataset\Faceforensics++\FaceForensics++_C23\Deepfakes"
+    "Original": #r"put your path here",
+    "DeepFakes": #r"put your path here"
 }
 
-OUTPUT_DIR = r"F:\Grad Project\output_sequences"
-MODEL_PATH = r"F:\Grad Project\dataset_faces\model.pt"
+OUTPUT_DIR = #r"put your path here"
+MODEL_PATH = #r"put your path here"
 
-SEQ_LEN = 60  # ممكن تغيره 35-50
+SEQ_LEN = 60  
 IMG_SIZE = 224
 MAX_SAMPLING_RATE = 3
 
-# ----------- تحميل YOLO -----------
 yolo_model = YOLO(MODEL_PATH)
 
-# ----------- Resize بدون distortion -----------
 def resize_no_padding(img, size=IMG_SIZE):
     return cv2.resize(img, (size, size))
 
-# ----------- augmentation sequence-wise -----------
 def augment_sequence_params():
     return {
         "flip": random.random() < 0.5,
@@ -46,7 +42,6 @@ def apply_augment(img, params):
         img = cv2.add(img, noise)
     return img
 
-# ----------- adaptive sampling rate based on video length -----------
 def get_sampling_rate(total_frames):
     if total_frames < SEQ_LEN * MAX_SAMPLING_RATE:
         rate = max(1, total_frames // SEQ_LEN)
@@ -54,7 +49,6 @@ def get_sampling_rate(total_frames):
         rate = MAX_SAMPLING_RATE
     return rate
 
-# ----------- معالجة فيديو -----------
 def process_video(video_path, out_dir, is_real=True):
     cap = cv2.VideoCapture(str(video_path))
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -73,7 +67,6 @@ def process_video(video_path, out_dir, is_real=True):
             frame_count += 1
             continue
 
-        # --------- YOLO للوجه ---------
         results = yolo_model(frame)[0]
         if len(results.boxes) != 1:
             frame_count += 1
@@ -82,25 +75,22 @@ def process_video(video_path, out_dir, is_real=True):
         x1, y1, x2, y2 = results.boxes[0].xyxy[0].cpu().numpy().astype(int)
         face = frame[y1:y2, x1:x2]
 
-        # --------- Resize ---------
         face = resize_no_padding(face)
         frames.append(face)
         frame_count += 1
 
         if len(frames) == SEQ_LEN:
-            # --------- Save original sequence ---------
             seq_count += 1
             seq_folder = os.path.join(out_dir, f"seq_{seq_count:04d}")
             os.makedirs(seq_folder, exist_ok=True)
             for i, f in enumerate(frames):
                 cv2.imwrite(os.path.join(seq_folder, f"frame_{i+1:04d}.jpg"), f)
 
-            # --------- Augmented sequence ----------
             do_augment = False
             if is_real:
-                do_augment = random.random() < 0.5  # 50% من Real فقط
+                do_augment = random.random() < 0.5  
             else:
-                do_augment = random.random() < 0.15  # 15% فقط للـ Fake
+                do_augment = random.random() < 0.15  
 
             if do_augment:
                 aug_params = augment_sequence_params()
@@ -116,7 +106,6 @@ def process_video(video_path, out_dir, is_real=True):
     cap.release()
     return seq_count
 
-# ----------- معالجة كل الفولدرات -----------
 def process_all():
     for label, folder in DATASET_DIRS.items():
         print(f"\n🔥 Processing {label}")
@@ -131,5 +120,4 @@ def process_all():
             seq_count = process_video(video_path, out_video_folder, is_real=(label=="Original"))
             print(f"Saved {seq_count} sequences for {video_name}")
 
-# ----------- تشغيل -----------
 process_all()
