@@ -9,15 +9,15 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# ===================== SEED =====================
+# SEED 
 torch.manual_seed(42)
 np.random.seed(42)
 random.seed(42)
 
-# ===================== DATA PATH =====================
+# DATA PATH 
 DATA_PATH = #r"put your path here"
 
-# ===================== LOAD DATA =====================
+# LOAD DATA
 video_paths, video_labels = [], []
 
 for class_name, label in [("Real", 0), ("Fake", 1)]:
@@ -32,7 +32,7 @@ for class_name, label in [("Real", 0), ("Fake", 1)]:
 video_paths = np.array(video_paths)
 video_labels = np.array(video_labels)
 
-# ===================== SPLIT =====================
+# SPLIT 
 train_videos, temp_videos, train_labels, temp_labels = train_test_split(
     video_paths, video_labels, test_size=0.3, stratify=video_labels, random_state=42
 )
@@ -41,7 +41,7 @@ val_videos, test_videos, val_labels, test_labels = train_test_split(
     temp_videos, temp_labels, test_size=0.5, stratify=temp_labels, random_state=42
 )
 
-# ===================== DATASET =====================
+# DATASET 
 class VideoDataset(Dataset):
     def __init__(self, video_paths, labels):
         self.video_paths = video_paths
@@ -72,7 +72,7 @@ def collate_fn(batch):
     x, y = zip(*batch)
     return torch.stack(x), torch.tensor(y)
 
-# ===================== DATALOADERS =====================
+# DATALOADERS 
 train_loader = DataLoader(VideoDataset(train_videos, train_labels),
                           batch_size=8, shuffle=True, collate_fn=collate_fn)
 
@@ -82,7 +82,7 @@ val_loader = DataLoader(VideoDataset(val_videos, val_labels),
 test_loader = DataLoader(VideoDataset(test_videos, test_labels),
                          batch_size=8, shuffle=False, collate_fn=collate_fn)
 
-# ===================== MODEL =====================
+# MODEL 
 class LSTMClassifier(nn.Module):
     def __init__(self):
         super().__init__()
@@ -106,19 +106,19 @@ class LSTMClassifier(nn.Module):
 
         return self.fc(h)
 
-# ===================== DEVICE =====================
+# DEVICE 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = LSTMClassifier().to(device)
 
-# ===================== LOSS + OPTIMIZER =====================
+# LOSS + OPTIMIZE
 criterion = nn.CrossEntropyLoss(label_smoothing=0.05)
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-3)
 
-# ===================== TRACKING =====================
+# TRACKING 
 train_losses, val_losses = [], []
 train_accs, val_accs = [], []
 
-# ===================== TRAIN =====================
+# TRAIN 
 epochs = 15
 best_val = 0
 patience = 3
@@ -126,7 +126,7 @@ counter = 0
 
 for epoch in range(epochs):
 
-    # ---------- TRAIN ----------
+    # TRAIN 
     model.train()
     total_loss, correct, total = 0, 0, 0
 
@@ -154,7 +154,7 @@ for epoch in range(epochs):
     train_losses.append(train_loss)
     train_accs.append(train_acc)
 
-    # ---------- VALIDATION ----------
+    # VALIDATION
     model.eval()
     preds_all, labels_all, probs_all = [], [], []
     val_loss = 0
@@ -188,11 +188,11 @@ for epoch in range(epochs):
         best_val = val_acc
         counter = 0
         torch.save(model.state_dict(), "best_model.pth")
-        print("🔥 Saved Best Model")
+        print(" Saved Best Model")
     else:
         counter += 1
         if counter >= patience:
-            print("🛑 Early Stopping Triggered")
+            print(" Early Stopping Triggered")
             break
 
 
@@ -213,7 +213,7 @@ with torch.no_grad():
         labels_all.extend(y.cpu().numpy())
         probs_all.extend(probs.cpu().numpy())
 
-print("\n🔥 TEST RESULTS")
+print("\n TEST RESULTS")
 print("Acc:", accuracy_score(labels_all, preds_all))
 print("Prec:", precision_score(labels_all, preds_all))
 print("Recall:", recall_score(labels_all, preds_all))
