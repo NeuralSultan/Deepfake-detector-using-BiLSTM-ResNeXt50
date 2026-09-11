@@ -203,6 +203,17 @@ The model was evaluated using multiple classification metrics.
 | Accuracy          | 86.8% |
 | Weighted F1-Score | 86.7% |
 | ROC-AUC           |  0.93 |
+### Confusion Matrix
+
+![Confusion Matrix](results/confusion_matrix.png)
+
+### ROC Curve
+
+![ROC Curve](results/roc_curve.png)
+
+### LOSS Curve
+
+![LOSSCurve](results/loss_curve.png)
 
 These results demonstrate the model's ability to distinguish between real and manipulated video content within the evaluated datasets.
 
