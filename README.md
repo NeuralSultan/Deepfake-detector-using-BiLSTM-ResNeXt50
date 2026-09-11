@@ -253,7 +253,6 @@ deepfake-detection/
 │
 ├── README.md
 ├── requirements.txt
-├── .gitignore
 ├── LICENSE
 │
 ├── preprocessing/
