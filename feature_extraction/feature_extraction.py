@@ -5,29 +5,25 @@ from torchvision import models, transforms
 from PIL import Image
 from tqdm import tqdm
 
-# ---------------- إعدادات ----------------
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 SEQ_LEN = 60
 IMG_SIZE = 224
 
-FRAMES_DIR = r"F:\Grad Project\frames_sequence3"
-FEATURES_DIR = r"F:\Grad Project\features_sequence3"
+FRAMES_DIR = #r"put your path here"
+FEATURES_DIR = #r"put your path here"
 
 os.makedirs(FEATURES_DIR, exist_ok=True)
 
-# ---------------- ResNeXt50 ----------------
 resnext = models.resnext50_32x4d(weights=models.ResNeXt50_32X4D_Weights.DEFAULT)
 resnext.fc = torch.nn.Identity()
 resnext = resnext.to(DEVICE)
 resnext.eval()
 
-# ---------------- Transform ----------------
 transform = transforms.Compose([
     transforms.Resize((IMG_SIZE, IMG_SIZE)),
     transforms.ToTensor(),
 ])
 
-# ---------------- Feature Extraction ----------------
 for cls in ["Real", "Fake"]:
     cls_path = os.path.join(FRAMES_DIR, cls)
     out_cls_path = os.path.join(FEATURES_DIR, cls)
@@ -48,7 +44,7 @@ for cls in ["Real", "Fake"]:
             ])
 
             if len(frames) < SEQ_LEN:
-                continue  # سيب السيكونس الصغيرة
+                continue  
 
             features = []
 
@@ -57,11 +53,11 @@ for cls in ["Real", "Fake"]:
                 img_tensor = transform(img).unsqueeze(0).to(DEVICE)
 
                 with torch.no_grad():
-                    feat = resnext(img_tensor).squeeze(0)  # [2048]
+                    feat = resnext(img_tensor).squeeze(0) 
 
                 features.append(feat.cpu().numpy())
 
-            features = np.stack(features)  # [SEQ_LEN, 2048]
+            features = np.stack(features)  
             np.save(save_path, features)
 
-print("✅ Feature Extraction Done!")
+print("Feature Extraction Done")
