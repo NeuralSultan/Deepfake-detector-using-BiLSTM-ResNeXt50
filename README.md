@@ -253,6 +253,15 @@ The application allows users to:
 6. Run the trained temporal model.
 7. Display the prediction and confidence.
 
+### Real Video Detection
+
+![Real Video Detection](results/streamlit_real.png)
+
+### Fake Video Detection
+
+![Fake Video Detection](results/streamlit_fake.png)
+
+
 The application also provides visual feedback during the detection process.
 
 ---
