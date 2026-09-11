@@ -5,9 +5,91 @@
 
 Deepfake technology has become increasingly realistic, making it difficult to distinguish manipulated media from authentic content using traditional visual inspection.
 
-This project presents an AI-based deepfake detection system designed to classify video content as either **Real** or **Fake**. The system combines face detection and preprocessing, data augmentation, deep feature extraction using ResNeXt50, and temporal sequence modeling using a Bidirectional LSTM (BiLSTM).
+This project presents an AI-based deepfake detection system designed to classify video content as either **Real** or **Fake**. The system combines face detection and preprocessing, data augmentation, and temporal modeling using deep learning.
 
 The project also includes a Streamlit-based application that provides an interface for testing videos and obtaining a deepfake prediction.
+
+---
+
+## Installation
+
+### Prerequisites
+
+Ensure you have the following installed on your system:
+
+- **Python**: 3.8 or higher
+- **pip**: Python package manager
+- **Git**: For cloning the repository
+
+### Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/NeuralSultan/Deepfake-detector-using-BiLSTM-ResNeXt50.git
+cd Deepfake-detector-using-BiLSTM-ResNeXt50
+```
+
+### Step 2: Create a Virtual Environment
+
+It's recommended to create a virtual environment to avoid dependency conflicts:
+
+**On Windows:**
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+**On macOS/Linux:**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### Step 3: Install Required Dependencies
+
+Install all required packages from `requirements.txt`:
+
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### Step 4: Install PyTorch (Optional - if not in requirements.txt)
+
+If you need GPU support or want to specify a specific PyTorch version:
+
+**For CPU only:**
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+```
+
+**For GPU (CUDA 11.8):**
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+```
+
+**For GPU (CUDA 12.1):**
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+```
+
+For other CUDA versions, visit [PyTorch.org](https://pytorch.org/get-started/locally/).
+
+### Step 5: Download Pre-trained Models
+
+The project requires two pre-trained models:
+
+1. **YOLOv8 Face Detection Model** - Will be automatically downloaded on first use
+2. **Deepfake Detector Model** - Download from the models directory
+
+Ensure the `models/` directory exists:
+
+```bash
+mkdir -p models
+```
+
+Download the trained models and place them in the `models/` directory:
+- `deepfake_detector.pth`
+- `yolov8_face.pt` (auto-downloads)
 
 ---
 
@@ -192,6 +274,42 @@ The final temporal model uses:
 
 ---
 
+## Usage
+
+### Running the Streamlit Application
+
+After installation, you can run the Streamlit web interface:
+
+```bash
+streamlit run streamlit/app.py
+```
+
+The application will open in your default web browser at `http://localhost:8501`.
+
+### Using the Detection Pipeline Programmatically
+
+```python
+import torch
+from feature_extraction.feature_extraction import FeatureExtractor
+from training.train import TemporalClassifier
+
+# Load the model
+model = TemporalClassifier(input_size=2048, hidden_size=96, num_layers=1)
+model.load_state_dict(torch.load('models/deepfake_detector.pth'))
+model.eval()
+
+# Extract features from video
+extractor = FeatureExtractor(model_name='resnet50')
+features = extractor.extract_from_video('path/to/video.mp4')
+
+# Make prediction
+with torch.no_grad():
+    output = model(features)
+    prediction = torch.sigmoid(output)
+```
+
+---
+
 ## Evaluation
 
 The model was evaluated using multiple classification metrics.
@@ -203,6 +321,7 @@ The model was evaluated using multiple classification metrics.
 | Accuracy          | 86.8% |
 | Weighted F1-Score | 86.7% |
 | ROC-AUC           |  0.93 |
+
 ### Confusion Matrix
 
 ![Confusion Matrix](results/confusion_matrix.png)
@@ -384,13 +503,23 @@ Application Deployment
 ```
 
 ---
-Disclaimer
+
+## Disclaimer
 
 This project is intended for research and educational purposes.
 
 Deepfake detection models can produce false positives and false negatives. The system should therefore be considered an AI-assisted detection tool rather than definitive proof that a video is authentic or manipulated.
 
-⸻
- Results at a Glance
+---
 
-Task: Deepfake Video Detection Classes: Real / Fake Frames: 60 per video Features: 2048-D ResNeXt50 Temporal: Bidirectional LSTM Accuracy: 86.8% F1-Score: 86.7% AUC: 0.93 Calibration: Temperature Scaling Threshold: 0.72
+## Results at a Glance
+
+**Task:** Deepfake Video Detection  
+**Classes:** Real / Fake  
+**Frames:** 60 per video  
+**Features:** 2048-D ResNeXt50  
+**Temporal:** Bidirectional LSTM  
+**Accuracy:** 86.8%  
+**F1-Score:** 86.7%  
+**AUC:** 0.93  
+**Calibration:** Temperature Scaling
