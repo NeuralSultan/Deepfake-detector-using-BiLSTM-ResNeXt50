@@ -9,7 +9,6 @@ from torchvision import transforms, models
 from ultralytics import YOLO
 import matplotlib.pyplot as plt
 
-# ------------------ CONFIG ------------------
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 SEQ_LEN = 60
@@ -17,28 +16,25 @@ BUFFER_SIZE = 5
 IMG_SIZE = 224
 FEATURE_DIM = 2048
 
-LSTM_MODEL_PATH = r"F:\4th try unseen test 86.7%\lstmnewdata2.pth"
-YOLO_MODEL_PATH = r"F:\Grad Project\dataset_faces\model.pt"
+LSTM_MODEL_PATH = #r"put your path here"
+YOLO_MODEL_PATH = #r"put your path here"
 
-# ------------------ UI CONFIG ------------------
 st.set_page_config(page_title="Deepfake Detection System", layout="wide")
 
-# ------------------ HEADER ------------------
 st.markdown("""
 <div style='text-align: center; padding: 15px;'>
-    <h1 style='color:#00BFFF;'>🎯 Deepfake Detection System</h1>
+    <h1 style='color:#00BFFF;'> Deepfake Detection System</h1>
     <p style='font-size:18px;'>AI-powered Video Authenticity Analysis (YOLO + ResNeXt + BiLSTM)</p>
 </div>
 """, unsafe_allow_html=True)
 
-# ------------------ SIDEBAR ------------------
 with st.sidebar:
-    st.title("⚙️ Settings")
+    st.title("Settings")
 
     THRESHOLD = st.slider("Fake Detection Threshold", 0.0, 1.0, 0.72)
 
     st.markdown("---")
-    st.markdown("### 📌 Pipeline")
+    st.markdown("###  Pipeline")
     st.write("""
     - YOLO: Face Detection  
     - ResNeXt: Feature Extraction  
@@ -48,7 +44,7 @@ with st.sidebar:
     st.markdown("---")
     st.info("Upload a video and let AI analyze authenticity")
 
-# ------------------ LOAD MODELS ------------------
+# LOAD MODELS
 @st.cache_resource
 def load_models():
     yolo = YOLO(YOLO_MODEL_PATH)
@@ -84,7 +80,7 @@ transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-# ------------------ UPLOAD ------------------
+# UPLOAD 
 col1, col2 = st.columns([1, 1])
 
 with col1:
@@ -116,7 +112,7 @@ if uploaded_file:
     last_box = None
     frame_count = 0
 
-    # ------------------ PROCESS VIDEO ------------------
+    # PROCESS VIDEO 
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -175,7 +171,7 @@ if uploaded_file:
 
     cap.release()
 
-    # ------------------ FINAL SEQUENCE ------------------
+    # FINAL SEQUENCE 
     if len(frames_seq) > 0:
         seq_input = torch.stack(frames_seq).unsqueeze(0).to(DEVICE)
 
@@ -185,7 +181,7 @@ if uploaded_file:
 
         seq_probs.extend([prob] * len(frames_seq))
 
-    # ------------------ RESULTS ------------------
+    # RESULTS
     avg_probs = np.mean(seq_probs, axis=0)
 
     real_prob = float(avg_probs[0])
@@ -193,33 +189,33 @@ if uploaded_file:
 
     final_label = "Fake" if fake_prob > THRESHOLD else "Real"
 
-    # ------------------ RESULT CARDS ------------------
-    st.markdown("## 🧠 Analysis Result")
+    # RESULT CARDS
+    st.markdown("## Analysis Result")
 
     col1, col2 = st.columns(2)
 
-    col1.metric("🟢 Real Probability", f"{real_prob:.2f}")
-    col2.metric("🔴 Fake Probability", f"{fake_prob:.2f}")
+    col1.metric("Real Probability", f"{real_prob:.2f}")
+    col2.metric("Fake Probability", f"{fake_prob:.2f}")
 
     st.progress(fake_prob)
 
     if final_label == "Fake":
         st.markdown(f"""
         <div style='background:#ff4b4b;padding:20px;border-radius:10px;text-align:center;'>
-            <h2 style='color:white;'>⚠️ FAKE VIDEO DETECTED</h2>
+            <h2 style='color:white;'>FAKE VIDEO DETECTED</h2>
             <p style='color:white;'>Confidence: {fake_prob:.2f}</p>
         </div>
         """, unsafe_allow_html=True)
     else:
         st.markdown(f"""
         <div style='background:#00c853;padding:20px;border-radius:10px;text-align:center;'>
-            <h2 style='color:white;'>✅ REAL VIDEO</h2>
+            <h2 style='color:white;'>REAL VIDEO</h2>
             <p style='color:white;'>Confidence: {real_prob:.2f}</p>
         </div>
         """, unsafe_allow_html=True)
 
-    # ------------------ VIDEO OUTPUT ------------------
-    st.markdown("## 🎥 Video Results")
+    #  VIDEO OUTPUT 
+    st.markdown("## Video Results")
 
     col1, col2 = st.columns(2)
 
@@ -227,13 +223,13 @@ if uploaded_file:
         st.subheader("Original Video")
         st.video(video_path)
 
-    # ------------------ OPTIONAL: GRAPH ------------------
-    st.markdown("## 📈 Fake Probability Over Time")
+    # GRAPH 
+    st.markdown("## Fake Probability Over Time")
 
     probs = [p[1] for p in seq_probs if isinstance(p, (list, np.ndarray))]
     if len(probs) > 0:
         st.line_chart(probs)
 
-    # ------------------ FOOTER ------------------
+    # FOOTER 
     st.markdown("---")
     st.caption("Deepfake Detection System | Graduation Project | AI Pipeline: YOLO + ResNeXt + BiLSTM")
