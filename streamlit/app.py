@@ -84,7 +84,7 @@ transform = transforms.Compose([
 col1, col2 = st.columns([1, 1])
 
 with col1:
-    uploaded_file = st.file_uploader("📤 Upload Video", type=["mp4", "avi", "mov"])
+    uploaded_file = st.file_uploader("Upload Video", type=["mp4", "avi", "mov"])
 
 with col2:
     st.info("Supported formats: MP4 / AVI / MOV\nRecommended: short clips (≤30s)")
@@ -98,7 +98,7 @@ if uploaded_file:
     cap = cv2.VideoCapture(video_path)
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-    st.markdown("## 📊 Processing Dashboard")
+    st.markdown("## Processing Dashboard")
 
     progress_bar = st.progress(0)
     frame_counter = st.empty()
@@ -220,7 +220,7 @@ if uploaded_file:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("Original Video")
+        st.subheader("Uploaded Video")
         st.video(video_path)
 
     # GRAPH 
