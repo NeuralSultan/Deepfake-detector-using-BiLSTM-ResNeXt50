@@ -6,13 +6,13 @@ This folder contains four sample videos used to test the Deepfake Detection Syst
 
 ```text
 test_videos/
-├── real/
-│   ├── REAL1.mp4
-│   └── REAL2.mp4
+├── fake/
+│   ├── FAKE1.mp4
+│   └── FAKE2.mp4
 │
-└── fake/
-    ├── FAKE1.mp4
-    └── FAKE2.mp4
+└── real/
+    ├── REAL1.mp4
+    └── REAL2.mp4
 ```
 
 ## Contents
