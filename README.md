@@ -1,6 +1,6 @@
 # Deepfake-detector-using-BiLSTM-ResNeXt50
 
-## 🚀 Try the Live Demo
+##  Try the Live Demo
 
 **Experience the deepfake detector without installation:**
 
