@@ -4,7 +4,7 @@ numpy
 Pillow
 tqdm
 streamlit
-opencv-python
+opencv-python-headless
 ultralytics
 matplotlib
 scikit-learn
