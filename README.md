@@ -400,27 +400,49 @@ The application also provides visual feedback during the detection process.
 ## Repository Structure
 
 ```text
-deepfake-detection/
-│
-├── README.md
-├── requirements.txt
-├── LICENSE
-│
-├── preprocessing/
-│   └── preprocessing.py
+Deepfake-detector-using-BiLSTM-ResNeXt50/
 │
 ├── feature_extraction/
 │   └── feature_extraction.py
 │
-├── training/
-│   └── train.py
+│
+├── models/
+│   ├── deepfake_detector.pth
+│   ├── yolov8_face.pt
+│
+│
+├── preprocessing/
+│   └── face_extraction_preprocessing_augmentation.py
+│
+│
+├── results/
+│   ├── confusion_matrix.png
+│   ├── roc_curve.png
+│   ├── loss_curve.png
+│   ├── streamlit_real.png
+│   ├── streamlit_fake.png
+│
 │
 ├── streamlit/
 │   └── app.py
 │
-└── models/
-    ├── deepfake_detector.pth
-    └── yolov8_face.pt
+│
+├── test_videos/
+│   └── fake
+│       ├── FAKE1.mp4
+│       ├── FAKE2.mp4
+│   └── real
+│       ├── REAL1.mp4
+│       ├── REAL2.mp4                    
+│
+│
+├── training/
+│   └── train.py
+│
+│
+├── README.md
+├── requirements.txt
+├── LICENSE
 ```
 
 ### Directory Description
