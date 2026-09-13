@@ -9,3 +9,4 @@ ultralytics
 matplotlib
 scikit-learn
 seaborn
+omegaconf
