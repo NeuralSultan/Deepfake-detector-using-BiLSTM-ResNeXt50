@@ -447,25 +447,41 @@ Deepfake-detector-using-BiLSTM-ResNeXt50/
 
 ### Directory Description
 
-#### `preprocessing/`
-
-Contains the face extraction, preprocessing, and augmentation pipeline.
 
 #### `feature_extraction/`
 
 Contains the offline ResNeXt50 feature extraction pipeline.
 
-#### `training/`
 
-Contains the model training implementation.
+#### `models/`
+
+Contains the trained model weights and YOLOv8 weights when included in the repository.
+
+
+#### `preprocessing/`
+
+Contains the face extraction, preprocessing, and augmentation pipeline.
+
+
+#### `results/`
+
+This folder contains the evaluation results and sample outputs of the Deepfake Detection System, including model performance curves, confusion matrix, and Streamlit prediction examples.
+
 
 #### `streamlit/`
 
 Contains the Streamlit inference application.
 
-#### `models/`
 
-Contains the trained model weights and YOLOv8 weights when included in the repository.
+#### `test_videos/`
+
+This folder contains sample videos for testing the Deepfake Detection System, including real and fake videos.
+
+
+#### `training/`
+
+Contains the model training implementation.
+
 
 ---
 
