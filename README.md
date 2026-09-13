@@ -1,11 +1,20 @@
 # Deepfake-detector-using-BiLSTM-ResNeXt50
 
+## 🚀 Try the Live Demo
+
+**Experience the deepfake detector without installation:**
+
+### **[Launch Live Streamlit Demo](https://deepfake-detector-using-bilstm-resnext50-9sp2jycchbfhnz5uhoy7o.streamlit.app/)**
+
+Simply upload a video and get instant deepfake detection results!
+
+---
 
 ## Overview
 
 Deepfake technology has become increasingly realistic, making it difficult to distinguish manipulated media from authentic content using traditional visual inspection.
 
-This project presents an AI-based deepfake detection system designed to classify video content as either **Real** or **Fake**. The system combines face detection and preprocessing, data augmentation, and temporal modeling using deep learning.
+This project presents an AI-based deepfake detection system designed to classify video content as either **Real** or **Fake**. The system combines face detection and preprocessing, data augmentation, and advanced deep learning techniques to achieve reliable deepfake detection.
 
 The project also includes a Streamlit-based application that provides an interface for testing videos and obtaining a deepfake prediction.
 
@@ -276,7 +285,7 @@ The final temporal model uses:
 
 ## Usage
 
-### Running the Streamlit Application
+### Running the Streamlit Application Locally
 
 After installation, you can run the Streamlit web interface:
 
@@ -285,6 +294,10 @@ streamlit run streamlit/app.py
 ```
 
 The application will open in your default web browser at `http://localhost:8501`.
+
+### Online Demo
+
+Try the live hosted demo without installation: **[Streamlit Cloud Demo](https://deepfake-detector-using-bilstm-resnext50-9sp2jycchbfhnz5uhoy7o.streamlit.app/)**
 
 ### Using the Detection Pipeline Programmatically
 
@@ -379,7 +392,6 @@ The application allows users to:
 ### Fake Video Detection
 
 ![Fake Video Detection](results/streamlit_fake.png)
-
 
 The application also provides visual feedback during the detection process.
 
@@ -508,7 +520,9 @@ Application Deployment
 
 This project is intended for research and educational purposes.
 
-Deepfake detection models can produce false positives and false negatives. The system should therefore be considered an AI-assisted detection tool rather than definitive proof that a video is authentic or manipulated.
+Deepfake detection models can produce false positives and false negatives. The system should therefore be considered an AI-assisted detection tool rather than definitive proof that a video is authentic or fake.
+
+Users bear full responsibility for the use of this project and any consequences resulting from its use.
 
 ---
 
