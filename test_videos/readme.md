@@ -17,8 +17,8 @@ test_videos/
 
 ## Contents
 
-* **2 Real Videos** — authentic videos used to evaluate the model on genuine media.
 * **2 Fake Videos** — manipulated/deepfake videos used to evaluate the model's ability to detect synthetic media.
+* **2 Real Videos** — authentic videos used to evaluate the model on genuine media.
 
 ## Purpose
 
