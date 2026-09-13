@@ -16,8 +16,8 @@ BUFFER_SIZE = 5
 IMG_SIZE = 224
 FEATURE_DIM = 2048
 
-LSTM_MODEL_PATH = #r"put your path here"
-YOLO_MODEL_PATH = #r"put your path here"
+LSTM_MODEL_PATH = r"models/deepfake_detector.pth"
+YOLO_MODEL_PATH = r"models/YOLOv8.pt"
 
 st.set_page_config(page_title="Deepfake Detection System", layout="wide")
 
