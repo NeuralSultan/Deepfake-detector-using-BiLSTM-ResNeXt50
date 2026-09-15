@@ -98,7 +98,7 @@ mkdir -p models
 
 Download the trained models and place them in the `models/` directory:
 - `deepfake_detector.pth`
-- `yolov8_face.pt` (auto-downloads)
+- `YOLOv8.pt` (auto-downloads)
 
 ---
 
